@@ -3,11 +3,14 @@ package main
 import (
 	"blogx_server/core"
 	"blogx_server/flags"
-	"fmt"
+	"blogx_server/global"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
 	flags.Parse()
-	fmt.Println(flags.FlagOptions)
-	core.ReadConf()
+	global.Config = core.ReadConf()
+	core.InitLogrus()
+	logrus.Errorf("yyyyy")
+	logrus.Debug("zzzz")
 }
