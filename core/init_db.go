@@ -58,6 +58,7 @@ func InitDB() *gorm.DB {
 			// Sources: 配置所有的写数据库实例（主库）。
 			// GORM会将写操作（如Create, Update, Delete）路由到这些主库。
 			Sources: []gorm.Dialector{mysql.Open(dc.DSN())}, //写库
+			Policy:  dbresolver.RandomPolicy{},
 		}))
 		if err != nil {
 			// 如果在配置读写分离插件时出错，这也是一个致命错误。

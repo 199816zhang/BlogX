@@ -82,7 +82,7 @@ type FileDateHook struct {
 
 // Levels 告诉logrus，这个Hook关心哪些日志级别。
 // 返回logrus.AllLevels意味着任何级别的日志都会触发这个Hook。
-func (hook FileDateHook) Levels() []logrus.Level {
+func (hook *FileDateHook) Levels() []logrus.Level {
 	return logrus.AllLevels
 }
 
@@ -91,7 +91,7 @@ func (hook FileDateHook) Levels() []logrus.Level {
 // 注意：这里的hook是值传递，意味着在Fire方法内部对hook字段的修改（如hook.fileDate）不会影响到原始的hook实例。
 // 这会导致每次跨天后，每条新日志都会触发一次文件切换，因为fileDate永远是旧的。
 // 正确的做法是使用指针接收器 `func (hook *FileDateHook) Fire...`，但这会修改代码，此处仅作说明。
-func (hook FileDateHook) Fire(entry *logrus.Entry) error {
+func (hook *FileDateHook) Fire(entry *logrus.Entry) error {
 	// 1. 获取当前日志的日期（"年-月-日"）和格式化后的完整日志行。
 	timer := entry.Time.Format("2006-01-02")
 	line, _ := entry.String() // entry.String() 会调用上面我们定义的Format方法
